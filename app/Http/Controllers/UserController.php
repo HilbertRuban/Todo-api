@@ -32,7 +32,8 @@ class UserController extends Controller
 
         try {
             $validated  = $request->all();
-            if(isset($validated)){
+            
+            if(!empty($validated)){
 
                 $existingEmail = User::Where('email', $request->email)->first();
                 if($existingEmail === null) {
