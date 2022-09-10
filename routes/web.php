@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/20201020/ping',function () {
+    return 'PONG';
+});
+
 Route::get('/', function () {
     return view('welcome');
 });
