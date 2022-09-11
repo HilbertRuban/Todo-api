@@ -6,6 +6,7 @@ use App\Models\User;
 use Exception;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -25,6 +26,7 @@ class UserController extends Controller
                 
                 if($user !== null && Hash::check($request->password,$user->password)) {
                     return response()->json([
+                        "user" => $user,
                         'message' => 'Logged in successfully',
                     ]);
                 }else{  
@@ -61,9 +63,14 @@ class UserController extends Controller
                     $newUser->password = Hash::make($request->password);
                     $newUser->save();
 
-                    return response(['Message'=>'Registered successfully'], 200);
+                    return response()->json([
+                        'user' => $newUser,
+                        'message' => 'Registered successfully',
+                    ]);
                 }else {
-                    return response(['Message'=>'User already registered please sign in'], 200);
+                    return response()->json([
+                        'message' => 'User already registered please sign in',
+                    ]);
                 }
 
 
@@ -74,7 +81,7 @@ class UserController extends Controller
             return $error->getMessage();
         }
         
-
+// Registered successfully User already registered please sign in
     }
 
     /**
