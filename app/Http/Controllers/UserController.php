@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Exception;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+
 
 class UserController extends Controller
 {
@@ -14,11 +16,26 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function signin(Request $request)
     {
-        //
+            $validated  = $request->all();
 
-        
+            if(!empty($validated)){
+                $user = User::where('email', $request->email)->first();
+                
+                if($user !== null && Hash::check($request->password,$user->password)) {
+                    return response()->json([
+                        'message' => 'Logged in successfully',
+                    ]);
+                }else{  
+                    return response()->json([
+                        'message' => 'Incorrect email or password',
+                    ]);
+                }
+            }else{
+                dump('no way');
+                return response(['Message'=>'error'], 400);
+            }
     }
 
     /**
@@ -27,12 +44,12 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function signUp(Request $request)
     {
 
         try {
             $validated  = $request->all();
-            
+
             if(!empty($validated)){
 
                 $existingEmail = User::Where('email', $request->email)->first();
@@ -44,9 +61,9 @@ class UserController extends Controller
                     $newUser->password = Hash::make($request->password);
                     $newUser->save();
 
-                    return response(['Message'=>'success'], 200);
+                    return response(['Message'=>'Registered successfully'], 200);
                 }else {
-                    return "User already exists";
+                    return response(['Message'=>'User already registered please sign in'], 200);
                 }
 
 
