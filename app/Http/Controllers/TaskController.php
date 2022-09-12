@@ -56,11 +56,12 @@ class TaskController extends Controller
      */
     public function show(Request $request, int $userId)
     {
-        $userTask = Task::where('user_id',$userId)->get();
+
+        $userTask = Task::Where('user_id',$userId)->get();
 
         if($userTask === null) {
             return response()->json([
-                'error' => 'Task not found'
+                'message' => 'Task not found'
             ]);
         }else{
             return response()->json([

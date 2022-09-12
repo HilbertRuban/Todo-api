@@ -23,6 +23,11 @@ class UserController extends Controller
 
             if(!empty($validated)){
                 $user = User::where('email', $request->email)->first();
+                if($user === null) {
+                    return response()->json([
+                        'message' => "You don't have an account please sign up",
+                    ]);
+                }
                 
                 if($user !== null && Hash::check($request->password,$user->password)) {
                     return response()->json([
