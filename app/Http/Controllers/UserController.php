@@ -20,15 +20,20 @@ class UserController extends Controller
     public function signin(Request $request)
     {
             $validated  = $request->all();
-
+            $userCount = User::count();
+            if($userCount === 0) {
+                return response()->json([
+                    'message' => "You don't have registered yet please sign up",
+                ]);
+            }
             if(!empty($validated)){
                 $user = User::where('email', $request->email)->first();
                 if($user === null) {
                     return response()->json([
-                        'message' => "You don't have an account please sign up",
+                        'message' => 'No account found for this email address. Make sure to sign up',
                     ]);
                 }
-                
+
                 if($user !== null && Hash::check($request->password,$user->password)) {
                     return response()->json([
                         "user" => $user,
