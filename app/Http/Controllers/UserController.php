@@ -61,8 +61,9 @@ class UserController extends Controller
 
                 $existingEmail = User::Where('email', $request->email)->first();
                 if($existingEmail === null) {
+                    $capitalizeName = ucfirst($request->username);
                     $newUser = new User();
-                    $newUser->name = $request->username;
+                    $newUser->name = $capitalizeName;
                     $newUser->email = $request->email;
                     $newUser->email_verified_at = $request->verified;
                     $newUser->password = Hash::make($request->password);
