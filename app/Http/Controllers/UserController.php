@@ -45,8 +45,9 @@ class UserController extends Controller
                     ]);
                 }
             }else{
-                dump('no way');
-                return response(['Message'=>'error'], 400);
+                return response()->json([
+                    'message' => 'Please assign email and password',
+                ]);
             }
     }
 
