@@ -15,7 +15,13 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
+        $allTask = Task::all();
+        return response()->json([
+            "data" => [
+                "tasks" => $allTask
+            ]
+        ]);
+
     }
 
     /**
@@ -99,8 +105,22 @@ class TaskController extends Controller
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Task $task)
-    {
-        //
+    // public function destroy(Task $task, Request $request, $taskId)
+    // {
+    //     dd("hi");
+    // }
+
+    public function delete(Request $request) {
+        if($request->id === []) {
+            return response()->json([
+                'message' => 'empty id'
+            ]);
+        }else {
+        Task::whereIn('id', $request->id)->delete();
+        return response()->json([
+            'message' => 'successfully deleted'
+        ]);
+        }
+        
     }
 }
