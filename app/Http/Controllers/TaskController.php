@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class TaskController extends Controller
 {
@@ -94,9 +95,28 @@ class TaskController extends Controller
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Task $task)
+    public function updateTask(Request $request)
     {
-        //
+        $data = $request->all();
+        // dd($data['taskData']);
+        $taskId = $data['taskData']['id'];
+        $updateTask = $data['taskData']['task'];
+        // dd($updateTask);
+        $taskUpdated = Task::where('id', $taskId)
+                ->update([
+                    'task_post' => $updateTask
+                ]);
+
+        if($taskUpdated === null) {
+            return response()->json([
+                'message' => 'updating error',
+            ]);
+        }else {
+            return response()->json([
+                'message' => 'successfully updated',
+                'task_updated' => $taskUpdated
+            ]);
+        }
     }
 
     /**

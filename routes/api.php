@@ -22,7 +22,7 @@ Route::post('/users/signin',[UserController::class,'signin']);
 Route::get('/task/all',[TaskController::class,'index']);
 Route::post('/task/new',[TaskController::class,'store']);
 Route::get('task/{userId}',[TaskController::class,'show']);
-
+Route::PUT('task/update',[TaskController::class,'updateTask']);
 Route::DELETE('/task/delete',[TaskController::class,'delete']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
